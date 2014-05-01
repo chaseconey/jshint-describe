@@ -64,7 +64,7 @@
 	var renderTable = function (jshint, descriptions) {
 		var table = $("#jshint-props");
 
-		table.find("tr").remove();
+		table.find("tbody tr").remove();
 
 		$.each(jshint, function (key, val) {
 			var item = '';
