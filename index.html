@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSHint Describe</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+</head>
+
+<body>
+
+<div class="container-fluid">
+	<h1>JSHint Describe</h1>
+
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#input" data-toggle="tab">Input</a></li>
+		<li><a href="#output" data-toggle="tab">Output</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="input">
+			<textarea name="jshint" class="form-control" id="jshint" rows="30" value='{"bitwise":true,"curly":true,"eqnull":true,"undef":true,"forin":true,"noarg":true,"noempty":true,"nonew":true,"globalstrict":true,"trailing":true,"browser":true,"jquery":true,"nomen":true,"onevar":true,"white":true,"globals":{"jQuery":true,"Handlebars":true,"ram":true,"noty":true,"angular":true,"moment":true},"devel":true}'></textarea>
+		</div>
+		<div class="tab-pane" id="output">
+			<table id="jshint-props" class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>Property</th>
+						<th>Value</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script>
+	$(function () {
+		var json = $("#jshint"),
+			btn = $("#hideInput"),
+			jshint,
+			descriptions;
+
+		$.getJSON("options.json", function (data) {
+			descriptions = data;
+		});
+
+		json.on("change paste keyup", function () {
+			if ($(this).val() !== "") {
+				jshint = $.parseJSON($(this).val());
+				renderTable(jshint, descriptions);
+			}
+		});
+
+		btn.on("click", function () {
+			json.toggle();
+		});
+	});
+
+	var renderTable = function (jshint, descriptions) {
+		var table = $("#jshint-props");
+
+		table.find("tr").remove();
+
+		$.each(jshint, function (key, val) {
+			var item = '';
+
+			item = '<tr><td>'+ key +'</td><td>'+ val +'</td><td>'+ descriptions[key] +'</td></tr>'
+
+			table.append(item);
+		});
+	}
+</script>
+</body>
+</html>
